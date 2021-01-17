@@ -37,12 +37,6 @@ class FileValidator
 
     public function validate()
     {
-        if (!empty($this->request['errors'])) {
-            $_SESSION['errors'] = $this->request['errors'];
-            header('Location: ' . $_SERVER['HTTP_REFERER']);
-            exit();
-        } else {
-            unset($_SESSION["errors"]);
-        }
+        errors($this->request);
     }
 }

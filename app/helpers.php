@@ -13,7 +13,8 @@ if (!function_exists('curl')) {
     function curl($ip)
     {
         $handle = curl_init();
-        $url = sprintf('%s%s%s%s', 'http://api.ipstack.com/', $ip, '?access_key=', config('app', 'access_key'));
+        $url = sprintf('%s%s%s%s', config('app', 'api_url'), $ip, '?access_key=', config('app', 'access_key'));
+
         // Set the url
         curl_setopt($handle, CURLOPT_URL, $url);
         // Set the result output to be a string.
@@ -54,5 +55,38 @@ if (!function_exists('config')) {
             }
         }
         return null;
+    }
+}
+
+if (!function_exists('errors')) {
+    function errors($request)
+    {
+        if (!empty($request['errors'])) {
+            $_SESSION['errors'] = $request['errors'];
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            exit();
+        } else {
+            unset($_SESSION["errors"]);
+        }
+    }
+}
+
+if (!function_exists('arrGet')) {
+    function arrGet(array $array, string $key)
+    {
+        if(in_array($key, $array)){
+            return $key;
+        }
+
+        throw new InvalidArgumentException("can not be found");
+    }
+}
+
+if(!function_exists('isJson')) {
+    function isJson($string) {
+
+        return is_string($string) &&
+            (is_object(json_decode($string)) ||
+                is_array(json_decode($string)));
     }
 }

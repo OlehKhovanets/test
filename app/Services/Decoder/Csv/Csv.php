@@ -7,6 +7,7 @@ use App\Services\Decoder\Strategy;
 
 class Csv implements Strategy
 {
+    protected $data;
 
     public function parseFile(): Csv
     {
@@ -18,7 +19,7 @@ class Csv implements Strategy
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                 $num = count($data);
                 $row++;
-                for ($c=0; $c < $num; $c++) {
+                for ($c = 0; $c < $num; $c++) {
                     $dataFromFile[$i][] = $data[$c];
                 }
                 $i++;
@@ -31,28 +32,33 @@ class Csv implements Strategy
         return $this;
     }
 
-    public function saveToDb(): void
+    public function buildCalls(): array
     {
         $i = 0;
         $calls = [];
 
         foreach ($this->data as $item) {
+            try {
 
-            $output = curl($item[4]);
+                if (!isJson($output = curl(arrGet($item, $item[4])))) {
+                    continue;
+                }
 
-            $calls[] = [
-                'customer_id' => $item[0] ?? 0,
-                'call_date' => $item[1] ?? '',
-                'duration' => $item[2] ?? 0,
-                'phone_number' => $item[3] ?? '',
-                'ip' => $item[4] ?? '',
-                'continent_code' => json_decode($output, true)['continent_code'] ?? ''
-            ];
+                $calls[] = [
+                    'customer_id' => arrGet($item, $item[0]),
+                    'call_date' => arrGet($item, $item[1]),
+                    'duration' => arrGet($item, $item[2]),
+                    'phone_number' => arrGet($item, $item[3]),
+                    'ip' => arrGet($item, $item[4]),
+                    'continent_code' => json_decode($output, true)['continent_code']
+                ];
+                $i++;
 
-            $i++;
+            } catch (\InvalidArgumentException $exception) {
+                continue;
+            }
         }
 
-        Call::query()->delete();
-        Call::query()->insert($calls);
+        return $calls;
     }
 }

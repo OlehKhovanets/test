@@ -27,9 +27,14 @@ class IndexController
             ->validate();
 
         //strategy for executing required file parser
-        (new Context(new Csv()))
+        $calls = (new Context(new Csv()))
             ->parseFile()
-            ->saveToDb();
+            ->buildCalls();
+
+        if(!empty($calls)) {
+            Call::query()->delete();
+            Call::query()->insert($calls);
+        }
 
         header('Location: ' . '/?action=show');
         exit();
@@ -39,8 +44,6 @@ class IndexController
     {
         httpMethod('get');
 
-        $calls = Call::query()->get()->toArray();
-
-        (new \App\Views\StatisticView())->output((new DataBuilder($calls))->build());
+        (new \App\Views\StatisticView())->output((new DataBuilder(Call::query()->get()->toArray()))->build());
     }
 }

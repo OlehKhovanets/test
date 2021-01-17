@@ -54,17 +54,20 @@ class DataBuilder
             $totalDuration = $this->groupByContinentCodes($value)['duration'];
             $continentCodesArr = $this->groupByContinentCodes($value)['continentCodesArr'];
 
+            $continentCount = 0;
             /*loop for each continent code*/
             foreach ($continentCodesArr as $continent => $continentCodeArr) {
                 $durationByContinentCode = 0;
-                $output[$outputCount]['continent'][$continent]['calls'] = count($continentCodeArr);
+                $output[$outputCount]['continent'][$continentCount]['calls'] = count($continentCodeArr);
+                $output[$outputCount]['continent'][$continentCount]['continent'] = $continent;
 
                 foreach ($continentCodeArr as $item) {
                     $durationByContinentCode += $item['duration'];
                 }
 
-                $output[$outputCount]['continent'][$continent]['duration'] = $durationByContinentCode;
+                $output[$outputCount]['continent'][$continentCount]['duration'] = $durationByContinentCode;
 
+                $continentCount++;
             }
 
             $output[$outputCount]['total_calls'] = count($value);

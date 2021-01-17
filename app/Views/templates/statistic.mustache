@@ -1,15 +1,25 @@
-<!--<strong>Hello, </strong><br>-->
-<!--{{#planet}}-->
-<!--    <p>User id: {{id}}</p>-->
-<!--{{/planet}}-->
-
-<!DOCTYPE html>
-<html>
-<body>
+<br>
 {{#errors}}
     {{errors.file}}
     {{errors.files}}
 {{/errors}}
 
-</body>
-</html>
+{{#output}}
+    CustomerId: {{customer_id}}
+    {{#continent}}
+        Continent: {{continent}}
+        <br>
+        Duration: {{duration}}
+        <br>
+        Calls: {{calls}}
+        <br>
+        <br>
+    {{/continent}}
+    <br>
+    TotalCalls: {{total_calls}}
+    <br>
+    TotalDuration: {{total_duration}}
+    <br>
+    <br>
+    <br>
+{{/output}}

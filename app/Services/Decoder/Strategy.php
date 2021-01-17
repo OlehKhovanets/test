@@ -6,5 +6,5 @@ interface Strategy
 {
     public function parseFile();
 
-    public function saveToDb();
+    public function buildCalls();
 }

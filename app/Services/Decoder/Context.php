@@ -19,8 +19,8 @@ class Context
         return $this;
     }
 
-    public function saveToDb(): void
+    public function buildCalls(): array
     {
-        $this->strategy->saveToDb();
+        return $this->strategy->buildCalls();
     }
 }
