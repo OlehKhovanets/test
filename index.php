@@ -9,7 +9,7 @@ require_once 'vendor/autoload.php';
 session_start();
 $controller = new \App\Http\Controllers\IndexController();
 
-if (isset($_GET['action']) && !empty($_GET['action'])) {
+if (!empty($_GET['action'])) {
     if (method_exists(new \App\Http\Controllers\IndexController(), $_GET['action'])) {
         $controller->{$_GET['action']}();
     } else {
