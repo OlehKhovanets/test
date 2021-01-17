@@ -72,10 +72,10 @@ if (!function_exists('errors')) {
 }
 
 if (!function_exists('arrGet')) {
-    function arrGet(array $array, string $key)
+    function arrGet(array $array, string $value)
     {
-        if(in_array($key, $array)){
-            return $key;
+        if(in_array($value, $array)){
+            return $value;
         }
 
         throw new InvalidArgumentException("can not be found");
