@@ -45,7 +45,7 @@ class Csv implements Strategy
                 }
 
                 $calls[] = [
-                    'customer_id' => arrGet($item, $item[0]),
+                    'customer_id' => arrGet($item, $item[10]),
                     'call_date' => arrGet($item, $item[1]),
                     'duration' => arrGet($item, $item[2]),
                     'phone_number' => arrGet($item, $item[3]),
@@ -54,7 +54,7 @@ class Csv implements Strategy
                 ];
                 $i++;
 
-            } catch (\InvalidArgumentException $exception) {
+            } catch (\Throwable $exception) {
                 continue;
             }
         }

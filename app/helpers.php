@@ -72,7 +72,7 @@ if (!function_exists('errors')) {
 }
 
 if (!function_exists('arrGet')) {
-    function arrGet($array, $value)
+    function arrGet(array $array, string $value)
     {
         if(in_array($value, $array)){
             return $value;
